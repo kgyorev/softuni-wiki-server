@@ -9,6 +9,7 @@ const settings = require('./server/config/settings')[env]
 
 
 
+
 mongoose.Promise = global.Promise;
 const app = express();
 
@@ -18,5 +19,5 @@ require('./server/config/routes')(app)
 require('./server/config/passport')()
 
 
-app.listen(1337)
+app.listen(settings.port)
 
