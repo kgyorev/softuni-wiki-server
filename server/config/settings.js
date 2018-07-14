@@ -9,7 +9,8 @@ module.exports = {development: {rootPath: rootPath,
 
   },
   production: {
-      db: 'mongodb://admin:apolo13A@ds131601.mlab.com:31601/softuni-wiki',
+     // db: 'mongodb://admin:apolo13A@ds131601.mlab.com:31601/softuni-wiki',
+      db:process.env.MONGO_URI,
       port: port,
   }
 }
