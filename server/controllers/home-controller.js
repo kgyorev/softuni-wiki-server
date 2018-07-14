@@ -12,8 +12,8 @@ const Edit = mongoose.model('Edit');
 
 module.exports = {
     index: (req, res) => {
-        Article.find({}, {}, {sort: {'creationDate': -1}}).limit(3).populate('author').then(articles => {
-            Article.findOne({}, {}, {sort: {'creationDate': -1}}, function (err, post) {
+        Article.find({deletedStatus:false}, {}, {sort: {'creationDate': -1}}).limit(3).populate('author').then(articles => {
+            Article.findOne({deletedStatus:false}, {}, {sort: {'creationDate': -1}}, function (err, post) {
                 console.log(post);
             }).populate('lastEdit').then(article => {
                 let displayContent = '';

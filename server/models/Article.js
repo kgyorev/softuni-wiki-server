@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 let articleSchema = mongoose.Schema({
     title: {type: String, required: true},
     lockedStatus: {type: Boolean, required: true , default:false},
+    deletedStatus: {type: Boolean, required: true , default:false},
     creationDate: {type: Date, default: Date.now},
     lastEdit: {type: mongoose.Schema.Types.ObjectId, ref: 'Edit'},
     editLs: {type: [mongoose.Schema.Types.ObjectId], ref: 'Edit',default:[]}

@@ -15,7 +15,12 @@ module.exports = (req, res, next) => {
     return jwt.verify(token, 's0m3 r4nd0m str1ng', (err, decoded) => {
         // the 401 code is for unauthorized status
         if (err) {
-            return res.status(401).end()
+            return res.status(401).json({
+                success: false,
+                isAuth:false,
+                isUserAuthorized: false,
+                user: ''
+            }).end()
         }
 
         const userId = decoded.sub;

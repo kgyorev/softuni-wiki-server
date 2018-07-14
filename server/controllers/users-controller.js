@@ -64,15 +64,35 @@ module.exports = {
     loginGet: (req, res) => {
         res.render('user/login');
     },
-
+    userDetailsGet: (req, res) => {
+        if (!req.user) {
+            res.status(200).json({
+                success: false,
+                isAuth:false,
+                isUserAuthorized: false,
+                user: ''
+            })
+        }
+        req.user.isInRole('Admin').then(isAdmin => {
+            return res.status(200).json({
+                success: true,
+                isAuth:true,
+                isUserAuthorized: isAdmin,
+                user: req.user.email
+            })
+        });
+    },
     loginPost: (req, res) => {
         let loginArgs = req.body;
         User.findOne({email: loginArgs.email}).then(user => {
             if (!user || !user.authenticate(loginArgs.password)) {
                 let errorMsg = 'Either username or password is invalid!';
                 loginArgs.error = errorMsg;
-                res.render('user/login', loginArgs);
-                return;
+              //  res.render('user/login', loginArgs);
+                return res.status(401).json({
+                    success: false,
+                    message: errorMsg
+                })
             }
 
             req.logIn(user, (err) => {
@@ -99,12 +119,18 @@ module.exports = {
                 // }
 
                 // return done(null, token, data)
-                return res.status(200).json({
-                    success: true,
-                    message: 'You have successfully logged in!',
-                    token: token,
-                    user: user.email
-                })
+                req.user.isInRole('Admin').then(isAdmin => {
+                    // let isUserAuthorized = isAdmin || req.user.isAuthor(article);
+                    return res.status(200).json({
+                        success: true,
+                        message: 'You have successfully logged in!',
+                        token: token,
+                        isAuth:true,
+                        isUserAuthorized: isAdmin,
+                        user: user.email
+                    })
+                });
+
                 // res.redirect(returnUrl);
             })
         })
