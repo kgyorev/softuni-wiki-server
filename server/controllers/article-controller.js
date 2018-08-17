@@ -51,7 +51,10 @@ module.exports = {
                     Edit.create(articleArgs).then(edit => {
                         Article.update({_id: article.id}, {$set: {lastEdit: edit.id, editLs: [edit]}})
                             .then(updateStatus => {
-                                res.redirect('/');
+                             //   res.redirect('/');
+                                return res.status(200).json({
+                                    success: true
+                                })
                             })
                     })
 
@@ -160,6 +163,7 @@ module.exports = {
         // }
 
         let articleArgs = req.body;
+        delete articleArgs._id;
 
         let errorMsg = '';
         // if (!articleArgs.title){
@@ -183,7 +187,10 @@ module.exports = {
                     editLs.push(edit.id)
                     Article.update({_id: id}, {$set: {lastEdit: edit.id, editLs: editLs}})
                         .then(updateStatus => {
-                            res.redirect(`/article/details/${id}`);
+                            return res.status(200).json({
+                                success: true
+                            })
+                            // res.redirect(`/article/details/${id}`);
                         })
                 })
             })
@@ -256,7 +263,10 @@ module.exports = {
             }
             Article.update({_id: id}, {$set: {lockedStatus: true}})
                 .then(updateStatus => {
-                    res.redirect(`/article/edit/${id}`);
+                  //  res.redirect(`/article/edit/${id}`);
+                    return res.status(200).json({
+                        success: true
+                    })
                 })
         })
     },
@@ -277,7 +287,10 @@ module.exports = {
             }
             Article.update({_id: id}, {$set: {lockedStatus: false}})
                 .then(updateStatus => {
-                    res.redirect(`/article/edit/${id}`);
+                   // res.redirect(`/article/edit/${id}`);
+                    return res.status(200).json({
+                        success: true
+                    })
                 })
         })
     },
@@ -341,7 +354,7 @@ module.exports = {
 
     allGet: (req, res) => {
         const pageSize = 10
-        const page = parseInt(req.query.page) || 0
+        const page = parseInt(req.query.page) || 1
         let startIndex = (page - 1) * pageSize
         let endIndex = startIndex + pageSize
         let totalCount = 0;

@@ -50,8 +50,13 @@ module.exports = {
                                         res.render('user/register', registerArgs);
                                         return;
                                     }
-
-                                    res.redirect('/');
+                                    return res.status(200).json({
+                                        success: true
+                                        // isAuth:true,
+                                        // isUserAuthorized: isAdmin,
+                                        // user: req.user.email
+                                    })
+                                   // res.redirect('/');
                                 })
                             }
                         });
